@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elena, You Need to Go to Sleep!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide-react/0.263.1/umd/lucide-react.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+            40%, 43% { transform: translate3d(0,-30px,0); }
+            70% { transform: translate3d(0,-15px,0); }
+            90% { transform: translate3d(0,-4px,0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .animate-bounce { animation: bounce 1s infinite; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Moon, Star, Heart, Sparkles } = LucideReact;
+
+        const ElenaBedtimeApp = () => {
+            const [currentStep, setCurrentStep] = useState(0);
+            const [completedSteps, setCompletedSteps] = useState([]);
+            const [showStars, setShowStars] = useState(false);
+            const [sleepyScore, setSleepyScore] = useState(0);
+
+            const bedtimeSteps = [
+                {
+                    id: 'brush-teeth',
+                    title: '🦷 Brush Your Teeth',
+                    description: 'Make your teeth sparkly clean!',
+                    activity: 'Click the toothbrush 3 times',
+                    icon: '🪥',
+                    clicks: 0,
+                    maxClicks: 3
+                },
+                {
+                    id: 'put-on-pajamas',
+                    title: '👕 Put On Pajamas',
+                    description: 'Get cozy in your sleepwear!',
+                    activity: 'Choose your favorite pajamas',
+                    icon: '🩳',
+                    completed: false
+                },
+                {
+                    id: 'story-time',
+                    title: '📚 Story Time',
+                    description: 'Listen to a magical bedtime story',
+                    activity: 'Click to hear the story',
+                    icon: '📖',
+                    completed: false
+                },
+                {
+                    id: 'say-goodnight',
+                    title: '🌙 Say Goodnight',
+                    description: 'Say goodnight to everyone!',
+                    activity: 'Click each friend to say goodnight',
+                    icon: '👋',
+                    friends: ['🐻', '🐰', '🦄', '⭐'],
+                    said: []
+                },
+                {
+                    id: 'dim-lights',
+                    title: '💡 Dim the Lights',
+                    description: 'Make the room nice and sleepy',
+                    activity: 'Click the light switch',
+                    icon: '🔅',
+                    completed: false
+                }
+            ];
+
+            const [steps, setSteps] = useState(bedtimeSteps);
+
+            useEffect(() => {
+                if (completedSteps.length === bedtimeSteps.length) {
+                    setShowStars(true);
+                    setSleepyScore(100);
+                }
+            }, [completedSteps]);
+
+            const handleStepClick = (stepId) => {
+                const stepIndex = steps.findIndex(step => step.id === stepId);
+                const step = steps[stepIndex];
+
+                if (stepId === 'brush-teeth') {
+                    const newSteps = [...steps];
+                    newSteps[stepIndex].clicks = (newSteps[stepIndex].clicks || 0) + 1;
+                    
+                    if (newSteps[stepIndex].clicks >= 3) {
+                        newSteps[stepIndex].completed = true;
+                        if (!completedSteps.includes(stepId)) {
+                            setCompletedSteps([...completedSteps, stepId]);
+                            setSleepyScore(prev => prev + 20);
+                        }
+                    }
+                    setSteps(newSteps);
+                } else if (stepId === 'say-goodnight') {
+                    // Handle in friend click
+                } else {
+                    const newSteps = [...steps];
+                    newSteps[stepIndex].completed = true;
+                    setSteps(newSteps);
+                    
+                    if (!completedSteps.includes(stepId)) {
+                        setCompletedSteps([...completedSteps, stepId]);
+                        setSleepyScore(prev => prev + 20);
+                    }
+                }
+            };
+
+            const handleFriendClick = (friend) => {
+                const stepIndex = steps.findIndex(step => step.id === 'say-goodnight');
+                const newSteps = [...steps];
+                
+                if (!newSteps[stepIndex].said) {
+                    newSteps[stepIndex].said = [];
+                }
+                
+                if (!newSteps[stepIndex].said.includes(friend)) {
+                    newSteps[stepIndex].said = [...newSteps[stepIndex].said, friend];
+                    
+                    if (newSteps[stepIndex].said.length === newSteps[stepIndex].friends.length) {
+                        newSteps[stepIndex].completed = true;
+                        if (!completedSteps.includes('say-goodnight')) {
+                            setCompletedSteps([...completedSteps, 'say-goodnight']);
+                            setSleepyScore(prev => prev + 20);
+                        }
+                    }
+                }
+                
+                setSteps(newSteps);
+            };
+
+            const resetApp = () => {
+                setSteps(bedtimeSteps);
+                setCompletedSteps([]);
+                setShowStars(false);
+                setSleepyScore(0);
+                setCurrentStep(0);
+            };
+
+            if (showStars) {
+                return React.createElement('div', {
+                    className: "min-h-screen bg-gradient-to-b from-purple-900 via-blue-900 to-indigo-900 flex flex-col items-center justify-center p-4 relative overflow-hidden"
+                }, [
+                    // Animated stars
+                    ...Array(20).fill(null).map((_, i) => 
+                        React.createElement(Star, {
+                            key: i,
+                            className: "absolute text-yellow-300 animate-pulse",
+                            style: {
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                animationDelay: `${Math.random() * 2}s`,
+                                fontSize: `${Math.random() * 20 + 10}px`
+                            }
+                        })
+                    ),
+                    React.createElement('div', { className: "text-center z-10" }, [
+                        React.createElement('h1', {
+                            key: 'title',
+                            className: "text-4xl font-bold text-white mb-4 animate-bounce"
+                        }, "🌟 Great Job, Elena! 🌟"),
+                        React.createElement('p', {
+                            key: 'subtitle',
+                            className: "text-2xl text-purple-200 mb-6"
+                        }, "You're all ready for bed!"),
+                        React.createElement('div', {
+                            key: 'moon-container',
+                            className: "bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6"
+                        }, [
+                            React.createElement(Moon, {
+                                key: 'moon',
+                                className: "text-yellow-300 w-16 h-16 mx-auto mb-4 animate-pulse"
+                            }),
+                            React.createElement('p', {
+                                key: 'sweet-dreams',
+                                className: "text-white text-lg"
+                            }, "Sweet dreams! 💤")
+                        ]),
+                        React.createElement('button', {
+                            key: 'reset-btn',
+                            onClick: resetApp,
+                            className: "bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full font-bold transition-colors"
+                        }, "Play Again Tomorrow 🌅")
+                    ])
+                ]);
+            }
+
+            return React.createElement('div', {
+                className: "min-h-screen bg-gradient-to-b from-blue-400 via-purple-500 to-indigo-600 p-4"
+            }, [
+                // Header
+                React.createElement('div', { key: 'header', className: "text-center mb-6" }, [
+                    React.createElement('h1', {
+                        key: 'main-title',
+                        className: "text-3xl font-bold text-white mb-2 drop-shadow-lg"
+                    }, "🌙 Elena, You Need to Go to Sleep! 🌙"),
+                    React.createElement('div', {
+                        key: 'score-container',
+                        className: "flex items-center justify-center gap-2 mb-4"
+                    }, [
+                        React.createElement('span', {
+                            key: 'score-label',
+                            className: "text-white font-semibold"
+                        }, "Sleepy Score:"),
+                        React.createElement('div', {
+                            key: 'score-value',
+                            className: "bg-white/30 rounded-full px-4 py-1"
+                        }, React.createElement('span', {
+                            className: "text-white font-bold"
+                        }, `${sleepyScore}/100`))
+                    ]),
+                    React.createElement('div', {
+                        key: 'hearts-container',
+                        className: "flex justify-center gap-1"
+                    }, Array(5).fill(null).map((_, i) => 
+                        React.createElement(Heart, {
+                            key: i,
+                            className: `w-6 h-6 ${i < completedSteps.length ? 'text-pink-300' : 'text-white/30'}`
+                        })
+                    ))
+                ]),
+
+                // Steps
+                React.createElement('div', {
+                    key: 'steps-container',
+                    className: "max-w-md mx-auto space-y-4"
+                }, steps.map((step, index) => {
+                    const isCompleted = completedSteps.includes(step.id);
+                    
+                    return React.createElement('div', {
+                        key: step.id,
+                        className: `bg-white/20 backdrop-blur-sm rounded-xl p-4 transition-all duration-300 ${
+                            isCompleted 
+                                ? 'bg-green-400/30 border-2 border-green-300' 
+                                : 'hover:bg-white/30 cursor-pointer'
+                        }`
+                    }, [
+                        React.createElement('div', {
+                            key: 'step-header',
+                            className: "flex items-center gap-3 mb-2"
+                        }, [
+                            React.createElement('span', {
+                                key: 'icon',
+                                className: "text-3xl"
+                            }, step.icon),
+                            React.createElement('div', { key: 'text-content' }, [
+                                React.createElement('h3', {
+                                    key: 'title',
+                                    className: "text-white font-bold text-lg"
+                                }, step.title),
+                                React.createElement('p', {
+                                    key: 'description',
+                                    className: "text-purple-100 text-sm"
+                                }, step.description)
+                            ]),
+                            isCompleted && React.createElement(Sparkles, {
+                                key: 'sparkles',
+                                className: "text-yellow-300 w-6 h-6 animate-pulse ml-auto"
+                            })
+                        ]),
+                        
+                        // Step-specific content
+                        step.id === 'brush-teeth' && !isCompleted && 
+                            React.createElement('div', { key: 'brush-content', className: "mt-3" },
+                                React.createElement('button', {
+                                    onClick: () => handleStepClick(step.id),
+                                    className: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition-colors"
+                                }, `🪥 Brush! (${step.clicks || 0}/3)`)
+                            ),
+                        
+                        step.id === 'put-on-pajamas' && !isCompleted &&
+                            React.createElement('div', {
+                                key: 'pajama-content',
+                                className: "mt-3 flex gap-2"
+                            }, ['🩳', '👘', '👕'].map((pj, i) =>
+                                React.createElement('button', {
+                                    key: i,
+                                    onClick: () => handleStepClick(step.id),
+                                    className: "bg-purple-500 hover:bg-purple-600 text-white px-3 py-2 rounded-full transition-colors text-xl"
+                                }, pj)
+                            )),
+                        
+                        step.id === 'story-time' && !isCompleted &&
+                            React.createElement('div', { key: 'story-content', className: "mt-3" },
+                                React.createElement('button', {
+                                    onClick: () => handleStepClick(step.id),
+                                    className: "bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition-colors"
+                                }, "📚 Read Story")
+                            ),
+                        
+                        step.id === 'say-goodnight' && !isCompleted &&
+                            React.createElement('div', { key: 'goodnight-content', className: "mt-3" }, [
+                                React.createElement('p', {
+                                    key: 'instruction',
+                                    className: "text-white text-sm mb-2"
+                                }, "Click each friend:"),
+                                React.createElement('div', {
+                                    key: 'friends',
+                                    className: "flex gap-2"
+                                }, step.friends.map((friend, i) =>
+                                    React.createElement('button', {
+                                        key: i,
+                                        onClick: () => handleFriendClick(friend),
+                                        className: `text-2xl px-3 py-2 rounded-full transition-all ${
+                                            step.said && step.said.includes(friend)
+                                                ? 'bg-green-500 scale-110'
+                                                : 'bg-pink-500 hover:bg-pink-600 hover:scale-105'
+                                        }`
+                                    }, friend)
+                                ))
+                            ]),
+                        
+                        step.id === 'dim-lights' && !isCompleted &&
+                            React.createElement('div', { key: 'lights-content', className: "mt-3" },
+                                React.createElement('button', {
+                                    onClick: () => handleStepClick(step.id),
+                                    className: "bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-full transition-colors"
+                                }, "💡 Click Light")
+                            ),
+                        
+                        isCompleted &&
+                            React.createElement('div', { key: 'completed', className: "mt-2" },
+                                React.createElement('span', {
+                                    className: "text-green-200 font-semibold"
+                                }, "✅ Complete!")
+                            )
+                    ]);
+                })),
+                
+                completedSteps.length > 0 && completedSteps.length < steps.length &&
+                    React.createElement('div', {
+                        key: 'encouragement',
+                        className: "text-center mt-6"
+                    }, React.createElement('p', {
+                        className: "text-white text-lg font-semibold"
+                    }, "Great job! Keep going, Elena! 🌟"))
+            ]);
+        };
+
+        ReactDOM.render(React.createElement(ElenaBedtimeApp), document.getElementById('root'));
+    </script>
+</body>
+</html>
