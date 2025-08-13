@@ -1,59 +1,58 @@
-# 🍪 Time Waster - Cookie Clicker Game
+🌌 Game Features:
+🏗️ Core Systems:
 
-A simple and addictive cookie clicker game that's perfect for wasting time! Click the cookie to earn cookies and buy upgrades to automate your cookie empire.
+Energy harvesting by clicking your home planet
+15+ different buildings across categories (energy, population, research, special)
+5 military units to build your space fleet
+Research tree with 6+ technologies and branching requirements
+Planet leveling system with XP progression
+Empire levels that scale with total progress
 
-## 🎮 How to Play
+⚔️ Military & Combat:
 
-1. **Click the Cookie** 🍪 - Start by clicking the big cookie button to earn cookies
-2. **Buy Upgrades** 🛒 - Spend your cookies on upgrades to:
-   - Increase cookies per click
-   - Generate automatic cookies per second
-   - Build your cookie empire!
-3. **Watch Numbers Go Up** 📈 - Enjoy the satisfying progression as your cookie count grows
+Fleet power system with different ship types
+Scout ships to Dreadnoughts
+Military research to boost combat effectiveness
+Strategic resource allocation between expansion and defense
 
-## 🚀 Features
+🔬 Advanced Features:
 
-- **Simple Gameplay** - Just click and watch numbers grow!
-- **6 Different Upgrades**:
-  - 🤖 Auto Clicker - Automatically clicks for you
-  - 💪 Super Click - Increases your click power
-  - 🏭 Cookie Factory - Mass produces cookies
-  - 💥 Mega Click - Massive click power boost
-  - 🌍 Cookie Empire - Global cookie domination
-  - 👑 God Mode - Ascend to cookie deity
-- **Auto-Save** - Your progress is automatically saved
-- **Responsive Design** - Works on desktop, tablet, and mobile
-- **Floating Numbers** - Satisfying visual feedback when clicking
-- **No External Dependencies** - Pure HTML, CSS, and JavaScript
+Quantum ascension system (prestige with permanent bonuses)
+Dynamic quest system with multiple objectives
+Achievement system (10+ achievements to unlock)
+Research tree with prerequisites and branching paths
+Random cosmic events (solar flares, alien contact, quantum anomalies)
 
-## 📊 Statistics Tracked
+🎮 Mini-Games & Engagement:
 
-- Total cookies earned
-- Cookies per click
-- Cookies per second (passive income)
-- Total clicks made
+Quantum puzzle mini-game for bonus rewards
+Streak system with escalating rewards
+Real-time event participation
+Offline progress calculation when you return
 
-## 🛠️ Technical Details
+📊 Deep Progression:
 
-- **No Libraries** - Built with vanilla HTML, CSS, and JavaScript
-- **Local Storage** - Progress saved in your browser
-- **Mobile Responsive** - Optimized for all screen sizes
-- **Modern CSS** - Uses gradients, animations, and backdrop filters
+Multiple resources to manage
+Population growth and colonization
+Multi-planet empire expansion
+Complex multiplier systems
+Detailed statistics tracking
 
-## 🎯 Game Strategy
+🎨 Polish & UI:
 
-1. Start by clicking manually to build up initial cookies
-2. Buy Auto Clickers first for passive income
-3. Alternate between click power upgrades and passive income
-4. The more upgrades you own, the more expensive they become
-5. There's no end - see how high you can get your numbers!
+Animated starfield background
+Particle effects and floating numbers
+Tabbed interface for organized gameplay
+Responsive design for all devices
+Achievement popups and notifications
+Modal dialogs for major decisions
 
-## 🔄 Reset Feature
+💾 Quality of Life:
 
-Press the "Reset Game" button to start over if you want a fresh challenge.
+Auto-save functionality
+Save export/import system
+Detailed statistics page
+Leaderboard comparison
+Settings panel
 
----
-
-**Warning**: This game is designed to be addictive! You might find yourself clicking cookies for hours. Play responsibly! 😄
-
-*Perfect for procrastination, stress relief, or when you need a mental break.*
+This is a complete idle/incremental game with dozens of hours of gameplay, multiple progression systems, and enough depth to keep players engaged long-term. It's essentially a full indie game packed into a single HTML file!
